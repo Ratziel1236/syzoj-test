@@ -16,7 +16,7 @@
       <div class="fields" style="margin-bottom: 0em">
         <div class="field">
           <label>OJ</label>
-          <select name="states" class="ui selection dropdown" multiple="" id="multi-select" v-model="ojSelected" v-on:change="reload()">
+          <select name="states" class="ui selection dropdown" multiple="" id="multi-select" v-model="ojSelected">
             <option value="">OJ</option>
             <option v-for="oj in ojList" :value="oj">{{ oj }}</option>
           </select>
@@ -24,7 +24,7 @@
         <div class="field">
           <label>比赛名称</label>
           <div class="ui icon input">
-            <input type="text" placeholder="比赛" v-model="contestName" v-on:change="reload()">
+            <input type="text" placeholder="比赛" v-model="contestName">
             <i class="search icon"></i>
           </div>
         </div>
@@ -64,7 +64,6 @@
     el: '#appCalendar',
     data: {
       contests: [],
-      shownContests: [],
       ojList: [],
       ojSelected: [],
       contestName: ''
@@ -81,13 +80,11 @@
       },
       loadContests(data) {
         let contests = [];
-        for (let oj of data.oj) {
-          for (let contest of oj.contests) {
-            contest.oj = oj;
-            delete(contest.oj.contests);
-            contests.push(contest);
-         }
-       }
+        for (let { contests: list, ...oj } of data.oj) {
+          for (let contest of list) {
+            contests.push({ oj, ...contest });
+          }
+        }
         contests.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
         for (let contest of contests) {
           contest.shownLastTime = this.parseMinutes(moment(contest.endTime).diff(contest.startTime, 'm'));
@@ -97,24 +94,17 @@
         return contests;
       },
       loadOjList(data) {
-        let ojList = [];
-        for (let oj of data.oj) {
-          ojList.push(oj.name);
+        return data.oj.map(({ name }) => name);
+      }
+    },
+    computed: {
+      shownContests() {
+        let data = this.contests;
+        if (this.ojSelected.length > 0) {
+          data = data.filter(res => this.ojSelected.includes(res.oj.name));
         }
-        return ojList;
-      },
-      ojFilter(data) {
-        if (this.ojSelected.length === 0) {
-          return data;
-        } else {
-          return data.filter(res => this.ojSelected.includes(res.oj.name));
-        }
-      },
-      contestNameFilter(data) {
-        return data.filter(res => res.name.toLowerCase().includes(this.contestName.toLowerCase()));
-      },
-      reload() {
-        this.shownContests = this.contestNameFilter(this.ojFilter(this.contests));
+        data = data.filter(res => res.name.toLowerCase().includes(this.contestName.toLowerCase()));
+        return data;
       }
     },
     async mounted() {
@@ -126,7 +116,6 @@
       } catch (err) {
         console.log(err);
       }
-      this.shownContests = this.contests;
     }
   });
 </script>
