@@ -28,15 +28,22 @@ app.get('/discussion/:type?', async (req, res) => {
       sort_time: 'DESC'
     });
 
+    let shownArticles = [];
+
     for (let article of articles) {
       await article.loadRelationships();
       if (article.problem_id) {
         article.problem = await Problem.findById(article.problem_id);
+        if (await article.problem.isAllowedUseBy(res.locals.user)) {
+          shownArticles.push(article);
+        }
+      } else {
+        shownArticles.push(article);
       }
     }
 
     res.render('discussion', {
-      articles: articles,
+      articles: shownArticles,
       paginate: paginate,
       problem: null,
       forum: forum
@@ -119,7 +126,7 @@ app.get('/article/:id', app.useRestriction, async (req, res) => {
     }
 
     await article.updateViews(res.locals.user);
-    
+
     article.rendered_content = await syzoj.utils.markdown(article.content);
 
     res.render('article', {
