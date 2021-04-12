@@ -1016,6 +1016,25 @@ app.post('/problem/:id/testdata/upload', app.multer.array('file'), async (req, r
   }
 });
 
+app.post('/problem/:id/testdata/delete', async (req, res) => {
+  try {
+    let id = parseInt(req.params.id);
+    let problem = await Problem.findById(id);
+
+    if(!problem) throw new ErrorMessage('无此题目。');
+    if(!await problem.isAllowedEditBy(res.locals.user)) throw new ErrorMessage('您没有权限进行此操作。');
+
+    await problem.deleteTestdata();
+
+    res.redirect(syzoj.utils.makeUrl(['problem', id, 'testdata']));
+  } catch (e) {
+    syzoj.log(e);
+    res.render('error', {
+      err: e
+    });
+  }
+});
+
 app.post('/problem/:id/testdata/delete/:filename', async (req, res) => {
   try {
     let id = parseInt(req.params.id);

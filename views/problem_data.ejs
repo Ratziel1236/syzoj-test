@@ -62,7 +62,30 @@ function getIcon(filename) {
               <td><%- !testdata.zip.size ? '<i class="minus icon"></i>' : syzoj.utils.formatSize(testdata.zip.size) %></td>
               <td><a style="color: #000; " href="<%= syzoj.utils.makeUrl(['problem', problem.id, 'testdata', 'download']) %>"><i class="download icon"></i></td>
               <% if (problem.allowedEdit) { %>
-                <td><i class="minus icon"></i></td>
+                <td>
+                  <a style="color: #000; " onclick="$('#modal-delete').modal('show')">
+                    <i class="remove icon"></i>
+                  </a>
+                  <div class="ui basic modal" id="modal-delete">
+                    <div class="ui icon header">
+                      <i class="trash icon"></i>
+                      <p style="margin-top: 15px; ">删除文件</p>
+                    </div>
+                    <div class="content" style="text-align: center; ">
+                      <p>确认删除全部文件吗？</p>
+                    </div>
+                    <div class="actions">
+                      <div class="ui red basic cancel inverted button">
+                        <i class="remove icon"></i>
+                        否
+                      </div>
+                      <a class="ui green ok inverted button" href-post="<%= syzoj.utils.makeUrl(['problem', problem.id, 'testdata', 'delete']) %>">
+                        <i class="checkmark icon"></i>
+                        是
+                      </a>
+                    </div>
+                  </div>
+                </td>
               <% } %>
             </tr>
             <% } %>

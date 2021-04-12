@@ -209,6 +209,13 @@ export default class Problem extends Model {
     });
   }
 
+  async deleteTestdata() {
+    await syzoj.utils.lock(['Promise::Testdata', this.id], async () => {
+      await fs.emptyDir(this.getTestdataPath());
+      await fs.remove(this.getTestdataArchivePath());
+    });
+  }
+
   async makeTestdataZip() {
     await syzoj.utils.lock(['Promise::Testdata', this.id], async () => {
       let dir = this.getTestdataPath();
