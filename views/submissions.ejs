@@ -102,7 +102,19 @@
     </tbody>
   </table>
   <% if (!items.length) { %>
-  <div style="background-color: #fff; height: 18px; margin-top: -18px; "></div>
+  <style>
+    #empty-table {
+      background-color: #fff;
+      height: 18px;
+      margin-top: -18px;
+    }
+    @media (prefers-color-scheme: dark) {
+      #empty-table {
+        background-color: #000;
+      }
+    }
+  </style>
+  <div id="empty-table"></div>
   <div class="ui placeholder segment" style="margin-top: -5px; ">
     <div class="ui icon header">
       <% if (isFiltered) { %>

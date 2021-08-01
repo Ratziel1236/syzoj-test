@@ -12,7 +12,9 @@
 <!-- Load monaco-editor -->
 <script src="<%- lib('monaco-editor/0.18.1/min/vs/loader.js') %>"></script>
 <script src="<%- selfLib('monaco-editor.js') %>"></script>
-<link rel="stylesheet" href="<%- selfLib('monaco-editor.css') %>">
+<link rel="stylesheet" href="<%- selfLib('monaco-editor.css') %>" media="(prefers-color-scheme: no-preference)">
+<link rel="stylesheet" href="<%- selfLib('monaco-editor.css') %>" media="(prefers-color-scheme: light)">
+<link rel="stylesheet" href="<%- selfLib('monaco-editor-dark.css') %>" media="(prefers-color-scheme: dark)">
 
 <%
 this.showLoadingEditor = () => {
