@@ -590,7 +590,15 @@ require(['vs/editor/editor.main'], function () {
         });
       }
 
-      $.getScript(window.pathSelfLib + "monaco-editor-tomorrow.js", function () {
+      $.when(
+        $.getScript(window.pathSelfLib + "monaco-editor-tomorrow.js"),
+        $.getScript(window.pathSelfLib + "monaco-editor-tomorrow-night-eighties.js"),
+        $.Deferred(function (deferred) {
+          $(deferred.resolve);
+        })
+      ).done(function () {
+        let monacoTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'tomorrow-night-eighties' : 'tomorrow';
+
         window.createCodeEditor = function (editorElement, langauge, content) {
           editorElement.innerHTML = '';
           var editor = monaco.editor.create(editorElement, {
@@ -598,7 +606,7 @@ require(['vs/editor/editor.main'], function () {
             language: langauge,
             multicursorModifier: 'ctrlCmd',
             cursorWidth: 1,
-            theme: 'tomorrow',
+            theme: monacoTheme,
             lineHeight: 22,
             fontSize: 14,
             fontFamily: "'Fira Mono', 'Bitstream Vera Sans Mono', 'Menlo', 'Consolas', 'Lucida Console', 'Source Han Sans SC', 'Noto Sans CJK SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', monospace",
@@ -629,7 +637,7 @@ require(['vs/editor/editor.main'], function () {
             language: 'markdown',
             multicursorModifier: 'ctrlCmd',
             cursorWidth: 1,
-            theme: 'tomorrow',
+            theme: monacoTheme,
             fontSize: 14,
             fontFamily: "'Fira Mono', 'Source Han Sans SC', 'Noto Sans CJK SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft Yahei', monospace",
             lineNumbersMinChars: 4,

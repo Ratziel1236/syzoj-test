@@ -7,9 +7,12 @@
     <meta name="viewport" content="width=1200">
     <title><%= title %> - <%= syzoj.config.title %></title>
     <link href="<%- lib('semantic-ui/2.4.1/semantic.min.css') %>" rel="stylesheet">
+    <link href="<%- lib('semantic-ui/2.4.1/semantic-dark.css') %>" rel="stylesheet" media="(prefers-color-scheme: dark)">
     <link href="<%- selfLib('tomorrow.css') %>" rel="stylesheet">
+    <link href="<%- selfLib('tomorrow-night-eighties.css') %>" rel="stylesheet" media="(prefers-color-scheme: dark)">
     <link href="<%- selfLib('math.css') %>" rel="stylesheet">
     <link href="<%- selfLib('style.css') %>?20181212" rel="stylesheet">
+    <link href="<%- selfLib('style-dark.css') %>" rel="stylesheet" media="(prefers-color-scheme: dark)">
     <link href="<%- lib('morris.js/0.5.1/morris.css') %>" rel="stylesheet">
     <% if (useLocalLibs || !syzoj.config.google_fonts || !['like-google-fonts', 'like-local', 'built-in'].includes(syzoj.config.google_fonts.type)) { %>
       <link href="<%- syzoj.utils.makeUrl(['google-fonts', 'fira-mono.css']) %>" rel="stylesheet">

@@ -10,6 +10,16 @@ let subtaskType = {
 <%
 } else if (testcases) {
 %>
+  <style>
+    #subtask-title {
+      background-color: #F9FAFB;
+    }
+    @media (prefers-color-scheme: dark) {
+      #subtask-title {
+       background-color: #0F0E0D;
+     }
+    }
+  </style>
   <% if (testcases.spj) { %>
     <p>评测方式：Special Judge</p>
   <% } else if (problem.type === 'interaction') { %>
@@ -22,7 +32,7 @@ let subtaskType = {
       <% let i = 0; %>
       <% for (let subtask of testcases) { %>
         <tr>
-          <td style="background-color: #F9FAFB" colspan="<%= problem.type === 'submit-answer' ? 3 : 2 %>">
+          <td id="subtask-title" colspan="<%= problem.type === 'submit-answer' ? 3 : 2 %>">
           <% if (testcases.length !== 1) { %>
             <h4 style="margin-bottom: 3px; ">子任务 <%= ++i %></h4>
             <% if (subtask.dependencies.length) { %>
