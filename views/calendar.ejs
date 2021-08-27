@@ -59,6 +59,11 @@
   </table>
 </div>
 
+<%
+  const cfg = syzoj.config.calendar;
+  const api_url = cfg.self_proxy ? syzoj.utils.makeUrl(['calendar', 'proxy']) : cfg.api_url;
+%>
+
 <script>
   var appCalendar = new Vue({
     el: '#appCalendar',
@@ -109,7 +114,7 @@
     },
     async mounted() {
       try {
-        let data = await fetch(<%- serializejs(syzoj.config.calendar.api_url) %>)
+        let data = await fetch(<%- serializejs(api_url) %>)
           .then(res => res.json());
         this.contests = this.loadContests(data);
         this.ojList = this.loadOjList(data);
