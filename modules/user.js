@@ -18,6 +18,7 @@ app.get('/ranklist', async (req, res) => {
     }
     let where = { is_show: true };
     if (syzoj.config.ranklist_rated_only) where.is_rated = true;
+    if (syzoj.config.ranklist_verified_only) where.is_verified = true;
     let paginate = syzoj.utils.paginate(await User.countForPagination(where), req.query.page, syzoj.config.page.ranklist);
     let ranklist = await User.queryPage(paginate, where, { [sort]: order.toUpperCase() });
     await ranklist.forEachAsync(async x => x.renderInformation());

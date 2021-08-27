@@ -132,6 +132,7 @@
   "register_invitation_code": true,
   "session_max_age": null,
   "ranklist_rated_only": false,
+  "ranklist_verified_only": false,
   "problem_tag_colors": [
     "red",
     "orange",

@@ -12,6 +12,7 @@ app.get('/', async (req, res) => {
   try {
     let ranklist_where = { is_show: true };
     if (syzoj.config.ranklist_rated_only) ranklist_where.is_rated = true;
+    if (syzoj.config.ranklist_verified_only) ranklist_where.is_verified = true;
     let ranklist = await User.queryRange([1, syzoj.config.page.ranklist_index], ranklist_where, {
       [syzoj.config.sorting.ranklist.field]: syzoj.config.sorting.ranklist.order
     });
