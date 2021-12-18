@@ -19,12 +19,9 @@
   content: 'Unofficial';
 }
 td#first-ac {
-  background: rgb(244, 255, 245);
+  background: rgba(0, 255, 0, 0.1);
 }
 @media (prefers-color-scheme: dark) {
-  td#first-ac {
-    background: transparent;
-  }
   .submit_time {
     color: #fff;
   }
@@ -76,7 +73,7 @@ td#first-ac {
         let i = 0, rank = 0, lastItem;
       %>
       <% for (let item of ranklist) { %>
-        <% 
+        <%
           if (item.is_official) i++;
 
           let latest = contest.start_time, timeSum = 0, unacceptedCount = 0;
@@ -102,7 +99,7 @@ td#first-ac {
             <% } else if (rank == 1) { %>
               <div class="ui yellow ribbon label">
             <% } else if (rank == 2) { %>
-              <div class="ui ribbon label">
+              <div class="ui silver ribbon label">
             <% } else if (rank == 3) { %>
               <div class="ui brown ribbon label" style="background-color: #C47222 !important;">
             <% } else { %>
