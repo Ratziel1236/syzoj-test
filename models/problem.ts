@@ -571,16 +571,18 @@ export default class Problem extends Model {
       if (flag) {
         await contest.setProblemsNoCheck(problemIDs);
         await contest.save();
-      }
-    }
 
-    let contestPlayers = await ContestPlayer.find();
-    for (let player of contestPlayers) {
-      if (player.score_details[this.id]) {
-        let data = player.score_details[this.id];
-        delete player.score_details[this.id];
-        player.score_details[id] = data;
-        await player.save();
+        let contestPlayers = await ContestPlayer.find({
+          contest_id: contest.id
+        });
+        for (let player of contestPlayers) {
+          if (player.score_details[this.id]) {
+            let data = player.score_details[this.id];
+            delete player.score_details[this.id];
+            player.score_details[id] = data;
+            await player.save();
+          }
+        }
       }
     }
 
