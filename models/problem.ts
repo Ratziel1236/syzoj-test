@@ -7,6 +7,7 @@ import User from "./user";
 import File from "./file";
 import JudgeState from "./judge_state";
 import Contest from "./contest";
+import ContestPlayer from "./contest_player";
 import ProblemTag from "./problem_tag";
 import ProblemTagMap from "./problem_tag_map";
 import SubmissionStatistics, { StatisticsType } from "./submission_statistics";
@@ -570,6 +571,18 @@ export default class Problem extends Model {
       if (flag) {
         await contest.setProblemsNoCheck(problemIDs);
         await contest.save();
+
+        let contestPlayers = await ContestPlayer.find({
+          contest_id: contest.id
+        });
+        for (let player of contestPlayers) {
+          if (player.score_details[this.id]) {
+            let data = player.score_details[this.id];
+            delete player.score_details[this.id];
+            player.score_details[id] = data;
+            await player.save();
+          }
+        }
       }
     }
 
