@@ -28,7 +28,7 @@ app.get('/', async (req, res) => {
     }));
 
     let fortune = null;
-    if (res.locals.user) {
+    if (res.locals.user && syzoj.config.divine) {
       fortune = Divine(res.locals.user.username, res.locals.user.sex);
     }
 
