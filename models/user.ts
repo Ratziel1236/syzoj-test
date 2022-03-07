@@ -84,7 +84,7 @@ export default class User extends Model {
   static async fromEmail(email): Promise<User> {
     return User.findOne({
       where: {
-        email: email
+        email: String(email)
       }
     });
   }
@@ -92,7 +92,7 @@ export default class User extends Model {
   static async fromName(name): Promise<User> {
     return User.findOne({
       where: {
-        username: name
+        username: String(name)
       }
     });
   }
