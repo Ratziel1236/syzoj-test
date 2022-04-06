@@ -11,6 +11,7 @@ import ContestPlayer from "./contest_player";
 import ProblemTag from "./problem_tag";
 import ProblemTagMap from "./problem_tag_map";
 import SubmissionStatistics, { StatisticsType } from "./submission_statistics";
+import List from "./problem-list";
 import { Status } from "./interfaces";
 
 import * as fs from "fs-extra";
@@ -18,6 +19,7 @@ import * as path from "path";
 import * as util from "util";
 import * as LRUCache from "lru-cache";
 import * as DeepCopy from "deepcopy";
+import * as yaml from "js-yaml";
 import TodoList from "./todo-list";
 
 const problemTagCache = new LRUCache<number, number[]>({
@@ -583,6 +585,29 @@ export default class Problem extends Model {
             await player.save();
           }
         }
+      }
+    }
+
+    let lists = await List.find();
+    for (let list of lists) {
+      let problems = yaml.load(list.problems);
+      let flag = false;
+      if(problems['type'] == 'array') {
+        for (let i = 0; i < problems['id'].length; ++i) {
+          if (problems['id'][i] == this.id) {
+            problems['id'][i] = id, flag = true;
+          }
+        }
+      } else {
+        for (let i in problems['id']) {
+          if (problems['id'][i] == this.id) {
+            problems['id'][i] = id, flag = true;
+          }
+        }
+      }
+      if (flag) {
+        list.problems = yaml.dump(problems);
+        await list.save();
       }
     }
 
