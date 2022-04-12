@@ -1,0 +1,104 @@
+<% this.title = '题单' %>
+<% include header %>
+
+<div class="padding">
+  <div class="ui grid" style="margin-bottom: 10px; ">
+    <div class="row">
+      <div class="column top_toolbar">
+        <div class="left_bar">
+          <form action="<%= syzoj.utils.makeUrl(['lists', 'search']) %>" method="get">
+            <div class="ui search" style="width: 280px; height: 28px; margin-top: -5.3px; ">
+              <div class="ui left icon input" style="width: 100%; ">
+                <input class="prompt" style="width: 100%; " type="text" value="<%= req.query.keyword %>" placeholder="ID / 题单名 …" name="keyword">
+                <i class="search icon"></i>
+              </div>
+              <div class="results" style="width: 100%; "></div>
+            </div>
+          </form>
+        </div>
+        <% if (allowCreateList) { %>
+          <div class="right_bar">
+            <div class="inline fields" style="margin-bottom: 25px; white-space: nowrap; ">
+              <a href="<%= syzoj.utils.makeUrl(['list', 0, 'edit']) %>" class="ui mini labeled icon right floated button" style="margin-left: auto; ">
+                <i class="ui icon write"></i>
+                创建题单
+              </a>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <style>
+    .top_toolbar > .left_bar {
+      float: left;
+      margin-top: 5px;
+    }
+    .top_toolbar > .right_bar {
+      float: right;
+      white-space: nowrap;
+    }
+    .top_toolbar > .left_bar > form {
+      margin-top: 4px;
+    }
+    .top_toolbar > .right_bar {
+      margin-top: 10px;
+    }
+  </style>
+
+  <% if (lists.length) { %>
+    <table class="ui very basic center aligned table">
+      <thead>
+        <tr>
+          <th>题单名称</th>
+          <th>描述</th>
+          <th>创建者</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let list of lists) { %>
+          <tr>
+            <td>
+              <a href="<%= syzoj.utils.makeUrl(['list', list.id]) %>">
+                <%= list.title %>
+                <% if (!list.is_public) { %>
+                  <span class="ui header"><div class="ui mini red label">未公开</div></span>
+                <% } %>
+              </a>
+            </td>
+            <td class="font-content"><%- list.description %></td>
+            <td>
+              <a href="<%= syzoj.utils.makeUrl(['user', list.owner_id]) %>" style="color: inherit; ">
+                <%= list.owner.username %><% if (list.owner.nameplate) { %><%- list.owner.nameplate %><% } %>
+              </a>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <div class="ui placeholder segment">
+      <div class="ui icon header">
+        <i class="columns icon" style="margin-bottom: 20px; "></i>
+        暂无题单
+      </div>
+    </div>
+  <% } %>
+  <br>
+<% include page %>
+  <script>
+    $(function () {
+      $('.ui.search').search({
+        debug: true,
+        apiSettings: {
+          url: '/api/v2/search/lists/{query}',
+          cache: false
+        },
+        fields: {
+          title: 'name'
+        }
+      });
+    });
+  </script>
+</div>
+<% include footer %>

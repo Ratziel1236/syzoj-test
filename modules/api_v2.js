@@ -98,6 +98,44 @@ app.get('/api/v2/search/tags/:keyword*?', async (req, res) => {
   }
 });
 
+app.get('/api/v2/search/lists/:keyword*?', async (req, res) => {
+  try {
+    let List = syzoj.model('problem-list');
+
+    let keyword = req.params.keyword || '';
+    let lists = await List.find({
+      where: {
+        title: TypeORM.Like(`%${keyword}%`)
+      },
+      order: {
+        id: 'ASC'
+      }
+    });
+
+    let result = [];
+
+    let id = parseInt(keyword);
+    if (id) {
+      let listById = await List.findById(id);
+      if (listById && await listById.isAllowedUseBy(res.locals.user)) {
+        result.push(listById);
+      }
+    }
+
+    await lists.forEachAsync(async list => {
+      if (await list.isAllowedUseBy(res.locals.user) && result.length < syzoj.config.page.list) {
+        result.push(list);
+      }
+    });
+
+    result = result.map(x => ({ name: `#${x.id}. ${x.title}`, value: x.id, url: syzoj.utils.makeUrl(['list', x.id]) }));
+    res.send({ success: true, results: result });
+  } catch (e) {
+    syzoj.log(e);
+    res.send({ success: false });
+  }
+});
+
 app.apiRouter.post('/api/v2/markdown', async (req, res) => {
   try {
     let s = await syzoj.utils.markdown(req.body.s.toString(), null, req.body.noReplaceUI === 'true');
