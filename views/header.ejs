@@ -9,7 +9,7 @@
     <link href="<%- lib('semantic-ui/2.4.1/semantic.min.css') %>" rel="stylesheet">
     <link href="<%- lib('semantic-ui/2.4.1/semantic-dark.css') %>" rel="stylesheet" media="(prefers-color-scheme: dark)">
     <link href="<%- selfLib('tomorrow.css') %>?20220306" rel="stylesheet">
-    <link href="<%- selfLib('tomorrow-night-eighties.css') %>?20220306" rel="stylesheet" media="(prefers-color-scheme: dark)">
+    <link href="<%- selfLib('tomorrow-dark.css') %>?20220306" rel="stylesheet" media="(prefers-color-scheme: dark)">
     <link href="<%- selfLib('math.css') %>" rel="stylesheet">
     <link href="<%- selfLib('style.css') %>?20181212" rel="stylesheet">
     <link href="<%- selfLib('style-dark.css') %>" rel="stylesheet" media="(prefers-color-scheme: dark)">
@@ -49,7 +49,7 @@
     </script>
     <% } %>
     <% if (!user || user.auto_spacing_page) { %>
-      <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js"></script>
+      <script src="<%- lib('pangu/4.0.7/browser/pangu.min.js') %>"></script>
       <script>
         document.addEventListener('DOMContentLoaded', () => {
           const mode = <%- JSON.stringify(typeof panguMode === 'undefined' ? 'watch' : panguMode) %>;

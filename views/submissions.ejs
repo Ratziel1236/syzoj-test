@@ -25,9 +25,9 @@
       <% } %>
       <% if (displayConfig.showScore) { %>
         <label style="font-size: 1.2em; margin-right: 1px; ">分数：</label>
-        <div class="field" style="padding-right: 6px; "><input name="min_score" style="width: 45px; " type="text" value="<%= form.min_score || 0 %>"></div>
+        <div class="field" style="padding-right: 6px; "><input name="min_score" style="width: 45px; " type="text" value="<%= form.min_score %>"></div>
         <label style="font-size: 1.2em; margin-right: 7px; ">～</label>
-        <div class="field"><input name="max_score" style="width: 45px; " type="text" value="<%= form.max_score || 100 %>"></div>
+        <div class="field"><input name="max_score" style="width: 45px; " type="text" value="<%= form.max_score %>"></div>
       <% } %>
       <label style="font-size: 1.2em; margin-right: 1px; ">语言：</label>
       <div class="field">
