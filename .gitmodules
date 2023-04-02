@@ -1,3 +1,4 @@
 [submodule "static"]
 	path = static
 	url = https://github.com/Ratziel1236/syzoj-not-public-cdn.git
+	branch = main
