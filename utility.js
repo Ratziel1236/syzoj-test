@@ -358,5 +358,13 @@ module.exports = {
   },
   allowedSeeingQuote(user) {
     return syzoj.config.custom_hitokoto && syzoj.config.custom_hitokoto.enabled && user && user.can_see_quote;
+  },
+  makeUserNameStyle(rating) {
+    if (rating < 1400) return 'newbie';
+    else if (rating < 1600) return 'amateur';
+    else if (rating < 1800) return 'expert';
+    else if (rating < 2000) return 'candidatemaster';
+    else if (rating < 2400) return 'master';
+    else return 'grandmaster';
   }
 };
